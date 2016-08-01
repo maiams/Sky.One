@@ -6,10 +6,10 @@ class LoadBalance:
     def __init__(self) -> None:
         """
         Defines the LB. Its runs until all tasks are done.
-        :self.instances: Array of Instance
-        :self.user_connection: Array of int
-        :self.tick: int total ticks
-        :self.total_cost: int total cost of execution of all instances of Instance
+        :param self.instances: Array of Instance
+        :param self.user_connection: Array of int
+        :param self.tick: int total ticks
+        :param self.total_cost: int total cost of execution of all instances of Instance
         """
         self.instances = []
         self.user_connection = [int(line.strip()) for line in open("input.txt", 'r')]
@@ -31,25 +31,24 @@ class LoadBalance:
         tmp_user = User()
 
         while self.tick < (len(self.user_connection) + tmp_user.task_time):
-            if self.tick < len(self.user_connection):
-                if self.user_connection[self.tick] > 0:
-                    ''' Step 1 '''
-                    remaining_users = self.__add_user_to_running_instance(self.user_connection[self.tick])
+            if self.tick < len(self.user_connection) and self.user_connection[self.tick] > 0:
+                ' Step 1 '
+                remaining_users = self.__add_user_to_running_instance(self.user_connection[self.tick])
 
-                    ''' Step 2 '''
-                    while remaining_users > 0:
-                        remaining_users = self.__add_user_to_new_instance(remaining_users)
-                        if remaining_users > 0:
-                            remaining_users = self.__add_user_to_running_instance(self.user_connection[self.tick])
+                ' Step 2 '
+                while remaining_users > 0:
+                    remaining_users = self.__add_user_to_new_instance(remaining_users)
+                    if remaining_users > 0:
+                        remaining_users = self.__add_user_to_running_instance(self.user_connection[self.tick])
 
-            ''' Step 3 '''
+            ' Step 3 '
             for instance in self.instances:
                 instance.run_processes()
 
-            ''' Step 4 '''
+            ' Step 4 '
             self.__reallocate_user()
 
-            ''' Step 5 '''
+            ' Step 5 '
             for instance in self.instances:
                 if instance.user_online() == 0:
                     self.instances.remove(instance)
