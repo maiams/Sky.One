@@ -22,8 +22,8 @@ class LoadBalance:
     def run(self) -> int:
         """
         Main method.
-        Step 1: Add Users to Instances if possible.
-        Step 2: Add Users to new Instances.
+        Step 1: Add Users to existing Instances if possible.
+        Step 2: Add Users to new Instances and then to existing instances.
         Step 3: Run Instances.
         Step 4: Reallocation of Users when possible.
         Step 5: Remove unused Instances.
@@ -39,6 +39,8 @@ class LoadBalance:
                     ''' Step 2 '''
                     while remaining_users > 0:
                         remaining_users = self.__add_user_to_new_instance(remaining_users)
+                        if remaining_users > 0:
+                            remaining_users = self.__add_user_to_running_instance(self.user_connection[self.tick])
 
             ''' Step 3 '''
             for instance in self.instances:
