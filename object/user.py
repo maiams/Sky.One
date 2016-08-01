@@ -1,6 +1,9 @@
 class User:
 
     def __init__(self) -> None:
+        """
+        Defines the User's task time to complete
+        """
         self.task_time = 5
 
     def task_done(self) -> bool:

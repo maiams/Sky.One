@@ -4,6 +4,13 @@ from object.user import User
 
 class LoadBalance:
     def __init__(self) -> None:
+        """
+        Defines the LB. Its runs until all tasks are done.
+        :self.instances: Array of Instance
+        :self.user_connection: Array of int
+        :self.ticks: int total ticks
+        :self.total_cost: int total cost of execution of all instances of Instance
+        """
         self.instances = []
         self.user_connection = [int(line.strip()) for line in open("input.txt", 'r')]
         self.ticks = 0
