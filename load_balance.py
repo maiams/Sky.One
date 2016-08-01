@@ -8,12 +8,12 @@ class LoadBalance:
         Defines the LB. Its runs until all tasks are done.
         :self.instances: Array of Instance
         :self.user_connection: Array of int
-        :self.ticks: int total ticks
+        :self.tick: int total ticks
         :self.total_cost: int total cost of execution of all instances of Instance
         """
         self.instances = []
         self.user_connection = [int(line.strip()) for line in open("input.txt", 'r')]
-        self.ticks = 0
+        self.tick = 0
         self.total_cost = 0
 
     def instance_add(self, instance: Instance) -> None:
@@ -30,11 +30,11 @@ class LoadBalance:
         """
         tmp_user = User()
 
-        while self.ticks < (len(self.user_connection) + tmp_user.task_time):
-            if self.ticks < len(self.user_connection):
-                if self.user_connection[self.ticks] > 0:
+        while self.tick < (len(self.user_connection) + tmp_user.task_time):
+            if self.tick < len(self.user_connection):
+                if self.user_connection[self.tick] > 0:
                     ''' Step 1 '''
-                    remaining_users = self.__add_user_to_running_instance(self.user_connection[self.ticks])
+                    remaining_users = self.__add_user_to_running_instance(self.user_connection[self.tick])
 
                     ''' Step 2 '''
                     while remaining_users > 0:
@@ -52,12 +52,12 @@ class LoadBalance:
                 if instance.user_online() == 0:
                     self.instances.remove(instance)
 
-            self.ticks += 1
+            self.tick += 1
             self.__log_lb()
 
         self.__log_lb_detailed()
 
-        return self.ticks
+        return self.tick
 
     def __add_user_to_running_instance(self, user_count: int) -> int:
         for instance in self.instances:
